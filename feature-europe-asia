@@ -1,3 +1,36 @@
+class MurderStatsManager:
+    def __init__(self):
+        self.data = {}
+
+    def add_data(self, continent, country, city, count):
+        if continent not in self.data:
+            self.data[continent] = {}
+        if country not in self.data[continent]:
+            self.data[continent][country] = {}
+        self.data[continent][country][city] = count
+
+    def get_stats(self):
+        return self.data
+
+    def get_city_stats(self, continent, country, city):
+        if continent in self.data:
+            if country in self.data[continent]:
+                if city in self.data[continent][country]:
+                    return self.data[continent][country][city]
+        return None
+
+    def remove_city(self, continent, country, city):
+        if continent in self.data:
+            if country in self.data[continent]:
+                if city in self.data[continent][country]:
+                    self.data[continent][country].pop(city)
+                    # Удалим страну, если в ней больше нет городов
+                    if len(self.data[continent][country]) == 0:
+                        self.data[continent].pop(country)
+                    # Удалим континент, если в нём больше нет стран
+                    if len(self.data[continent]) == 0:
+                        self.data.pop(continent)
+
 if __name__ == "__main__":
     manager = MurderStatsManager()
 
